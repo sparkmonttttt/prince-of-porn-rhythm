@@ -3,316 +3,375 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
-  <title>Prince of Porn – Rhythm Edition</title>
-  <meta name="description" content="Faithful browser remake of the classic Java ME adult rhythm game Prince of Porn by Brainmelt (2007)." />
+  <title>Prince of Porn</title>
   <style>
     :root {
       --bg: #1a0a12;
-      --card: #2d1522;
+      --card: #2a1220;
       --accent: #ff4d8d;
       --accent2: #ff9f43;
       --success: #2ecc71;
       --fail: #e74c3c;
-      --text: #f8e9ef;
-      --muted: #c9a0b0;
-      --special: #9b59b6;
+      --special: #c56cf0;
+      --text: #fce4ec;
     }
     * { box-sizing: border-box; margin: 0; padding: 0; }
     body {
-      font-family: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
-      background: linear-gradient(160deg, #1a0a12 0%, #2d1522 50%, #1a0a12 100%);
+      font-family: system-ui, -apple-system, sans-serif;
+      background: #12060c;
       color: var(--text);
       min-height: 100vh;
       display: flex;
-      flex-direction: column;
       align-items: center;
       justify-content: center;
-      padding: 10px;
-      overflow-x: hidden;
+      padding: 8px;
       user-select: none;
       -webkit-user-select: none;
-    }
-    .container {
-      width: 100%;
-      max-width: 420px;
-      background: var(--card);
-      border-radius: 16px;
-      box-shadow: 0 12px 40px rgba(0,0,0,0.55);
       overflow: hidden;
-      border: 1px solid rgba(255,77,141,0.3);
     }
-    header {
-      background: linear-gradient(90deg, #ff4d8d, #ff9f43);
-      padding: 12px 16px;
-      text-align: center;
-      font-weight: 800;
-      font-size: 1.2rem;
-      letter-spacing: 0.5px;
-      color: #1a0a12;
-    }
-    .screen {
-      display: none;
-      padding: 18px 14px 20px;
-      min-height: 460px;
-      flex-direction: column;
-    }
-    .screen.active { display: flex; }
-    h2 { margin-bottom: 10px; font-size: 1.25rem; }
-    p { line-height: 1.45; margin-bottom: 8px; color: var(--muted); font-size: 0.95rem; }
-    .big { font-size: 1.05rem; color: var(--text); }
-    .btn {
-      display: block;
+    .phone {
       width: 100%;
-      padding: 13px 16px;
-      margin: 7px 0;
+      max-width: 360px;
+      background: var(--card);
+      border-radius: 18px;
+      overflow: hidden;
+      box-shadow: 0 0 0 3px #3d1a2a, 0 20px 50px rgba(0,0,0,0.7);
+      display: flex;
+      flex-direction: column;
+      height: 620px;
+      max-height: 95vh;
+    }
+    .topbar {
+      background: linear-gradient(90deg, #ff4d8d, #ff9f43);
+      color: #1a0a12;
+      text-align: center;
+      font-weight: 900;
+      font-size: 1.05rem;
+      padding: 10px;
+      letter-spacing: 1px;
+    }
+    .screen { display: none; flex: 1; flex-direction: column; padding: 12px; overflow: hidden; }
+    .screen.active { display: flex; }
+
+    .intro-content { flex: 1; display: flex; flex-direction: column; justify-content: center; gap: 12px; }
+    .logo-area {
+      text-align: center;
+      font-size: 3.5rem;
+      margin-bottom: 8px;
+      animation: bounce 1.2s ease-in-out infinite;
+    }
+    @keyframes bounce {
+      0%,100% { transform: translateY(0); }
+      50% { transform: translateY(-10px); }
+    }
+    .title { text-align: center; font-size: 1.4rem; font-weight: 900; color: var(--accent); }
+    .subtitle { text-align: center; font-size: 0.9rem; color: #c9a0b0; }
+    .btn {
+      width: 100%;
+      padding: 14px;
       border: none;
-      border-radius: 10px;
-      font-size: 1.02rem;
-      font-weight: 700;
+      border-radius: 12px;
+      font-size: 1.05rem;
+      font-weight: 800;
       cursor: pointer;
-      transition: transform 0.1s, opacity 0.15s;
       background: linear-gradient(90deg, var(--accent), var(--accent2));
       color: #1a0a12;
     }
     .btn:active { transform: scale(0.97); }
-    .btn.secondary {
+    .btn.ghost {
       background: transparent;
       border: 2px solid var(--accent);
       color: var(--accent);
     }
-    .meter-wrap {
-      background: #3d1f2e;
-      border-radius: 999px;
-      height: 20px;
-      margin: 12px 0 6px;
-      overflow: hidden;
-      border: 2px solid rgba(255,77,141,0.4);
-    }
-    .meter {
-      height: 100%;
-      width: 0%;
-      background: linear-gradient(90deg, #ff4d8d, #ff9f43, #2ecc71);
-      border-radius: 999px;
-      transition: width 0.1s linear;
-    }
-    .status {
-      text-align: center;
-      font-size: 0.92rem;
-      margin-bottom: 6px;
-      min-height: 1.3em;
-    }
-    .scene-title {
-      font-size: 1.25rem;
-      font-weight: 800;
-      color: var(--accent);
-      text-align: center;
-      margin-bottom: 4px;
-    }
-    .prompt-area {
+
+    .scene-visual {
       flex: 1;
       display: flex;
       flex-direction: column;
       align-items: center;
       justify-content: center;
-      min-height: 140px;
       position: relative;
+      background: #1f0c16;
+      border-radius: 14px;
+      margin-bottom: 10px;
+      overflow: hidden;
     }
-    .prompt {
+    .scene-bg {
+      position: absolute;
+      inset: 0;
+      opacity: 0.25;
+      font-size: 6rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .char-pair {
+      display: flex;
+      gap: 20px;
+      align-items: flex-end;
+      z-index: 2;
+    }
+    .char {
+      font-size: 4.5rem;
+      filter: drop-shadow(0 8px 12px rgba(0,0,0,0.5));
+    }
+    .scene-label {
+      z-index: 3;
+      background: rgba(0,0,0,0.65);
+      padding: 6px 14px;
+      border-radius: 20px;
+      font-weight: 800;
+      font-size: 0.95rem;
+      color: var(--accent2);
+      margin-top: 10px;
+    }
+    .dialogue-box {
+      background: #3a1a2a;
+      border-radius: 10px;
+      padding: 10px 12px;
+      font-size: 0.88rem;
+      line-height: 1.35;
+      margin-bottom: 10px;
+      border-left: 3px solid var(--accent);
+      max-height: 70px;
+      overflow: hidden;
+      white-space: pre-line;
+    }
+
+    .play-hud {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 6px;
+      font-size: 0.85rem;
+    }
+    .lives-display { color: var(--accent); font-weight: 800; }
+    .streak-display { color: var(--accent2); font-weight: 700; }
+    .meter-wrap {
+      height: 14px;
+      background: #3a1a2a;
+      border-radius: 10px;
+      overflow: hidden;
+      border: 1px solid rgba(255,77,141,0.4);
+      margin-bottom: 8px;
+    }
+    .meter {
+      height: 100%;
+      width: 20%;
+      background: linear-gradient(90deg, #ff4d8d, #ff9f43, #2ecc71);
+      border-radius: 10px;
+      transition: width 0.1s linear;
+    }
+    .play-stage {
+      flex: 1;
+      position: relative;
+      background: #1a0c14;
+      border-radius: 12px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+      margin-bottom: 8px;
+    }
+    .stage-bg {
+      position: absolute;
+      inset: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 7rem;
+      opacity: 0.15;
+    }
+    .actors {
+      display: flex;
+      gap: 16px;
+      z-index: 2;
+      align-items: flex-end;
+    }
+    .actor {
       font-size: 4.2rem;
+      transition: transform 0.12s;
+    }
+    .actor.action {
+      animation: actionBounce 0.28s ease infinite alternate;
+    }
+    @keyframes actionBounce {
+      from { transform: translateY(0) scaleY(1); }
+      to { transform: translateY(-14px) scaleY(1.08); }
+    }
+    .prompt-big {
+      position: absolute;
+      top: 12%;
+      font-size: 5rem;
       font-weight: 900;
       color: var(--accent2);
-      text-shadow: 0 0 22px rgba(255,159,67,0.55);
-      animation: pulse 0.35s ease-in-out infinite alternate;
+      text-shadow: 0 0 30px rgba(255,159,67,0.7);
       opacity: 0;
+      z-index: 10;
       transition: opacity 0.08s;
     }
-    .prompt.visible { opacity: 1; }
-    .prompt.special-prompt {
+    .prompt-big.visible { opacity: 1; animation: promptPulse 0.3s ease-in-out infinite alternate; }
+    .prompt-big.special {
       color: var(--special);
-      text-shadow: 0 0 28px rgba(155,89,182,0.7);
+      text-shadow: 0 0 35px rgba(197,108,240,0.8);
     }
-    @keyframes pulse {
+    @keyframes promptPulse {
       from { transform: scale(1); }
-      to { transform: scale(1.1); }
+      to { transform: scale(1.15); }
     }
+    .feedback-float {
+      position: absolute;
+      top: 30%;
+      font-size: 1.6rem;
+      font-weight: 900;
+      opacity: 0;
+      z-index: 11;
+      pointer-events: none;
+    }
+    .feedback-float.show {
+      animation: floatUp 0.5s ease-out forwards;
+    }
+    @keyframes floatUp {
+      0% { opacity: 1; transform: translateY(0); }
+      100% { opacity: 0; transform: translateY(-40px); }
+    }
+    .feedback-float.good { color: var(--success); }
+    .feedback-float.bad { color: var(--fail); }
+    .feedback-float.special { color: var(--special); }
+    .hearts {
+      position: absolute;
+      top: 25%;
+      font-size: 1.8rem;
+      opacity: 0;
+      pointer-events: none;
+      z-index: 9;
+    }
+    .hearts.show { animation: floatHeart 0.8s ease-out forwards; }
+    @keyframes floatHeart {
+      0% { opacity: 1; transform: translateY(0) scale(1); }
+      100% { opacity: 0; transform: translateY(-60px) scale(1.4); }
+    }
+
     .keys {
       display: grid;
       grid-template-columns: repeat(4, 1fr);
       gap: 8px;
-      margin-top: 14px;
     }
     .key {
       aspect-ratio: 1;
-      border-radius: 12px;
-      border: 3px solid rgba(255,77,141,0.45);
-      background: #3d1f2e;
+      border-radius: 14px;
+      border: 3px solid rgba(255,77,141,0.4);
+      background: #3a1a2a;
       color: var(--text);
-      font-size: 1.6rem;
-      font-weight: 800;
+      font-size: 1.7rem;
+      font-weight: 900;
       display: flex;
       align-items: center;
       justify-content: center;
       cursor: pointer;
-      transition: background 0.07s, border-color 0.07s, transform 0.07s;
+      transition: all 0.07s;
     }
-    .key[data-key="5"] {
-      border-color: rgba(155,89,182,0.6);
-      font-size: 1.3rem;
-    }
+    .key[data-key="5"] { border-color: rgba(197,108,240,0.5); font-size: 1.3rem; }
     .key.active {
       background: var(--accent);
       border-color: #fff;
       color: #1a0a12;
-      transform: scale(1.06);
+      transform: scale(1.08);
+      box-shadow: 0 0 18px rgba(255,77,141,0.6);
     }
     .key.active-special {
       background: var(--special);
       border-color: #fff;
       color: #fff;
-      transform: scale(1.06);
+      transform: scale(1.08);
+      box-shadow: 0 0 18px rgba(197,108,240,0.7);
     }
-    .key.hit {
-      background: var(--success);
-      border-color: #fff;
-    }
-    .key.miss {
-      background: var(--fail);
-      border-color: #fff;
-    }
-    .score-line {
-      text-align: center;
-      font-size: 0.88rem;
-      color: var(--muted);
-      margin-top: 6px;
+    .key.hit { background: var(--success); border-color: #fff; }
+    .key.miss { background: var(--fail); border-color: #fff; }
+
+    .result-center {
+      flex: 1;
       display: flex;
-      justify-content: space-around;
-    }
-    .feedback {
-      position: absolute;
-      top: 18%;
-      font-size: 1.5rem;
-      font-weight: 800;
-      opacity: 0;
-      pointer-events: none;
-      transition: opacity 0.25s, transform 0.25s;
-    }
-    .feedback.show {
-      opacity: 1;
-      transform: translateY(-18px);
-    }
-    .feedback.good { color: var(--success); }
-    .feedback.bad { color: var(--fail); }
-    .feedback.special { color: var(--special); }
-    .result-box {
-      background: #3d1f2e;
-      border-radius: 12px;
-      padding: 14px;
-      margin: 10px 0;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
       text-align: center;
+      gap: 10px;
     }
-    .result-box.success { border: 2px solid var(--success); }
-    .result-box.fail { border: 2px solid var(--fail); }
-    footer {
-      text-align: center;
-      font-size: 0.72rem;
-      color: #8a6070;
-      padding: 8px 14px 12px;
-    }
-    .warning {
-      background: #4a1c2a;
-      border: 1px solid var(--accent);
-      border-radius: 10px;
-      padding: 10px;
-      margin-bottom: 12px;
-      font-size: 0.88rem;
-      color: #ffb6c9;
-    }
-    .stats {
+    .big-emoji { font-size: 4rem; }
+    .result-title { font-size: 1.5rem; font-weight: 900; }
+    .result-title.win { color: var(--success); }
+    .result-title.lose { color: var(--fail); }
+    .score-row {
       display: flex;
-      justify-content: space-around;
-      margin: 10px 0;
-      font-size: 0.88rem;
+      gap: 20px;
+      justify-content: center;
+      font-size: 0.9rem;
     }
-    .stat span {
-      display: block;
-      font-size: 1.25rem;
-      font-weight: 800;
-      color: var(--accent2);
-    }
-    .lives {
-      text-align: center;
-      font-size: 1.1rem;
-      margin-bottom: 6px;
-      color: var(--accent);
-    }
-    .lives span { font-weight: 800; }
-    .dialogue {
-      background: #3d1f2e;
-      border-radius: 10px;
-      padding: 12px;
-      margin: 8px 0 12px;
-      font-size: 0.95rem;
-      color: var(--text);
-      border-left: 4px solid var(--accent);
-      white-space: pre-line;
-    }
+    .score-row strong { display: block; font-size: 1.4rem; color: var(--accent2); }
   </style>
 </head>
 <body>
-  <div class="container">
-    <header>PRINCE OF PORN</header>
+  <div class="phone">
+    <div class="topbar">PRINCE OF PORN</div>
 
-    <!-- INTRO -->
-    <div id="screen-intro" class="screen active">
-      <div class="warning">
-        ⚠️ 18+ Adult content. Faithful remake of the 2007 Java ME classic by Brainmelt. All characters are consenting adults.
+    <div id="s-intro" class="screen active">
+      <div class="intro-content">
+        <div class="logo-area">🍌</div>
+        <div class="title">PRINCE OF PORN</div>
+        <div class="subtitle">Are you the real Prince…<br>or just another monkey-spank?</div>
+        <p style="text-align:center;font-size:0.85rem;color:#c9a0b0;margin-top:8px;">
+          Hit 1-3 in time. Key 5 = special.<br>3 lives. Don’t flop.
+        </p>
+        <button class="btn" id="btn-start">NEW GAME</button>
+        <button class="btn ghost" id="btn-howto">HOW TO PLAY</button>
       </div>
-      <h2 style="text-align:center;color:var(--accent)">Are you the real Prince… or just another monkey-spank?</h2>
-      <p class="big">Sleep your way to porn stardom. Hit the keys in time, keep the excitement rising, and don’t let the ladies down three times.</p>
-      <button class="btn" id="btn-start">New Game</button>
-      <button class="btn secondary" id="btn-howto">How to Play</button>
-      <button class="btn secondary" id="btn-credits">Credits</button>
     </div>
 
-    <!-- HOW TO -->
-    <div id="screen-howto" class="screen">
-      <h2>GAMEPLAY</h2>
-      <p class="big">Quickly press one of the keys <strong>1-3</strong> as they appear on the screen. Key <strong>5</strong> triggers a special event.</p>
-      <p>Your excitement “bar” grows with each correct push, but be careful! Push out of rhythm too often and you lose it with the ladies.</p>
-      <p><strong>Let them down 3 times</strong> and you will only have yourself to play with!</p>
-      <button class="btn" id="btn-back-intro">Got it</button>
-    </div>
-
-    <!-- CREDITS -->
-    <div id="screen-credits" class="screen">
-      <h2>Credits</h2>
-      <p><strong>Original:</strong> Prince of Porn (2007)<br>Developer: brainmelt</p>
-      <p>Browser remake inspired by the classic Java ME title. Dialogue and mechanics extracted from the original 128×160 midlet.</p>
-      <p>Visit andrew-lviv.net for more classic Java games.</p>
-      <button class="btn" id="btn-back-credits">Back</button>
-    </div>
-
-    <!-- SCENE INTRO -->
-    <div id="screen-scene-intro" class="screen">
-      <div class="scene-title" id="scene-name">Scene</div>
-      <div class="dialogue" id="scene-desc"></div>
-      <button class="btn" id="btn-begin-scene">GET READY!</button>
-    </div>
-
-    <!-- PLAY -->
-    <div id="screen-play" class="screen">
-      <div class="scene-title" id="play-scene-name"></div>
-      <div class="lives">Lives: <span id="lives-count">3</span></div>
-      <div class="status" id="status-text">Get ready…</div>
-      <div class="meter-wrap"><div class="meter" id="passion-meter"></div></div>
-      <div class="score-line">
-        <span>Hits: <strong id="hit-count">0</strong></span>
-        <span>Streak: <strong id="streak-count">0</strong></span>
-        <span>Misses: <strong id="miss-count">0</strong></span>
+    <div id="s-howto" class="screen">
+      <div class="intro-content">
+        <div class="title">GAMEPLAY</div>
+        <p style="font-size:0.95rem;line-height:1.5;color:#e0c0d0;">
+          Quickly press keys <strong>1-3</strong> as they appear.<br><br>
+          Key <strong>5</strong> triggers a special event.<br><br>
+          Fill the excitement bar.<br>
+          Miss too often and you lose a life.<br><br>
+          <strong>3 lives</strong> → Game Over.
+        </p>
+        <button class="btn" id="btn-back">GOT IT</button>
       </div>
-      <div class="prompt-area">
-        <div class="prompt" id="prompt">1</div>
-        <div class="feedback" id="feedback"></div>
+    </div>
+
+    <div id="s-scene" class="screen">
+      <div class="scene-visual">
+        <div class="scene-bg" id="scene-bg">🚽</div>
+        <div class="char-pair">
+          <div class="char" id="char-him">🧑</div>
+          <div class="char" id="char-her">👩</div>
+        </div>
+        <div class="scene-label" id="scene-label">Bathroom</div>
+      </div>
+      <div class="dialogue-box" id="scene-dialogue"></div>
+      <button class="btn" id="btn-go">GET READY!</button>
+    </div>
+
+    <div id="s-play" class="screen">
+      <div class="play-hud">
+        <div class="lives-display">❤ <span id="lives">3</span></div>
+        <div id="scene-name-play" style="font-weight:700;color:var(--accent2)">Bathroom</div>
+        <div class="streak-display">🔥 <span id="streak">0</span></div>
+      </div>
+      <div class="meter-wrap"><div class="meter" id="meter"></div></div>
+      <div class="play-stage">
+        <div class="stage-bg" id="stage-bg">🚽</div>
+        <div class="actors">
+          <div class="actor" id="actor-him">🧑</div>
+          <div class="actor" id="actor-her">👩</div>
+        </div>
+        <div class="prompt-big" id="prompt">1</div>
+        <div class="feedback-float" id="feedback"></div>
+        <div class="hearts" id="hearts">💕</div>
       </div>
       <div class="keys">
         <div class="key" data-key="1">1</div>
@@ -322,412 +381,307 @@
       </div>
     </div>
 
-    <!-- RESULT -->
-    <div id="screen-result" class="screen">
-      <div class="result-box" id="result-box">
-        <h2 id="result-title">Nice!</h2>
-        <div class="dialogue" id="result-msg"></div>
-        <div class="stats">
-          <div class="stat">Hits<span id="res-hits">0</span></div>
-          <div class="stat">Streak<span id="res-streak">0</span></div>
-          <div class="stat">Score<span id="res-score">0</span></div>
+    <div id="s-result" class="screen">
+      <div class="result-center">
+        <div class="big-emoji" id="result-emoji">🔥</div>
+        <div class="result-title" id="result-title">YOU MADE IT!</div>
+        <div class="dialogue-box" id="result-text" style="text-align:center;"></div>
+        <div class="score-row">
+          <div>Hits<strong id="r-hits">0</strong></div>
+          <div>Streak<strong id="r-streak">0</strong></div>
+          <div>Score<strong id="r-score">0</strong></div>
         </div>
-        <p id="bonus-line" style="color:var(--accent2);font-weight:700;"></p>
+        <div id="bonus" style="color:var(--accent2);font-weight:700;font-size:0.9rem;"></div>
       </div>
-      <button class="btn" id="btn-next">Continue</button>
+      <button class="btn" id="btn-next">NEXT</button>
     </div>
 
-    <!-- GAME OVER -->
-    <div id="screen-gameover" class="screen">
-      <div class="result-box fail">
-        <h2>GAME OVER</h2>
-        <div class="dialogue" id="gameover-msg">Did you spank your monkey too often or what's wrong with you?</div>
-        <div class="stats">
-          <div class="stat">Final Score<span id="go-score">0</span></div>
-          <div class="stat">Scenes<span id="go-scenes">0</span></div>
+    <div id="s-over" class="screen">
+      <div class="result-center">
+        <div class="big-emoji">🍌</div>
+        <div class="result-title lose">GAME OVER</div>
+        <div class="dialogue-box" style="text-align:center;">
+          Did you spank your monkey too often or what's wrong with you?
+        </div>
+        <div class="score-row">
+          <div>Score<strong id="o-score">0</strong></div>
+          <div>Scenes<strong id="o-scenes">0</strong></div>
         </div>
       </div>
-      <button class="btn" id="btn-retry">Try Again</button>
-      <button class="btn secondary" id="btn-menu">Main Menu</button>
+      <button class="btn" id="btn-retry">TRY AGAIN</button>
+      <button class="btn ghost" id="btn-menu">MENU</button>
     </div>
 
-    <!-- FINAL WIN -->
-    <div id="screen-final" class="screen">
-      <h2 style="text-align:center;color:var(--accent2)">YOU MADE IT!</h2>
-      <div class="dialogue" style="text-align:center;">
-        WOW! You're truly the Prince of Porn!
-      </div>
-      <div class="result-box success">
-        <div class="stats">
-          <div class="stat">Total Score<span id="final-score">0</span></div>
-          <div class="stat">Best Streak<span id="final-streak">0</span></div>
+    <div id="s-win" class="screen">
+      <div class="result-center">
+        <div class="big-emoji">👑</div>
+        <div class="result-title win">YOU MADE IT!</div>
+        <div class="dialogue-box" style="text-align:center;">
+          WOW! You're truly the Prince of Porn!
+        </div>
+        <div class="score-row">
+          <div>Total<strong id="w-score">0</strong></div>
+          <div>Best Streak<strong id="w-streak">0</strong></div>
         </div>
       </div>
-      <button class="btn" id="btn-replay">Play Again</button>
-      <button class="btn secondary" id="btn-menu2">Main Menu</button>
+      <button class="btn" id="btn-again">PLAY AGAIN</button>
+      <button class="btn ghost" id="btn-menu2">MENU</button>
     </div>
-
-    <footer>
-      Inspired by Brainmelt’s Prince of Porn (2007) · Faithful remake
-    </footer>
   </div>
 
   <script>
-    // Exact scenes & dialogue extracted from the original JAR
     const SCENES = [
       {
-        name: "Bathroom Stall",
-        intro: "Ok Girls, how about a hot ride in a scenic location! You can put on your makeup later!",
-        reply: "Ok pimp, then show us your best bathroom polka",
-        success: "You Stud!\nWanna be our personal house stallion?!",
-        fail: "You Loser!\nYou're not even good enough for toilet boy!",
-        sequence: [1,2,1,3,2,1,5,2,1,3,1,2,3,1,2,5,1],
-        speed: 760,
-        window: 410
+        name: "Bathroom",
+        bg: "🚽",
+        him: "🧑",
+        her: "👩",
+        intro: "Ok Girls, how about a hot ride in a scenic location!",
+        reply: "Show us your best bathroom polka!",
+        win: "You Stud! Wanna be our personal house stallion?!",
+        lose: "You Loser! Not even good enough for toilet boy!",
+        seq: [1,2,1,3,2,1,5,2,1,3,1,2,3,1,2,5,1],
+        speed: 740, window: 400
       },
       {
-        name: "Pipe Cleaning",
-        intro: "Hey lady! Im here to lay out some pipes. Seems necessary.",
-        reply: "Oh, the new pipe cleaner! Now you've really got my attention.",
-        success: "Oh my god! Do you want to stay for dinner? There's more strokin for dessert.",
-        fail: "You wuss!\nNext time you can stroke your salami all by yourself!",
-        sequence: [2,1,3,2,1,5,3,1,2,3,2,1,5,3,2,1,3],
-        speed: 700,
-        window: 390
+        name: "Pipe Job",
+        bg: "🔧",
+        him: "🧑",
+        her: "👩‍🦰",
+        intro: "Hey lady! I'm here to lay out some pipes.",
+        reply: "Oh, the new pipe cleaner! You've got my attention.",
+        win: "Oh my god! Stay for dinner? More strokin for dessert.",
+        lose: "You wuss! Stroke your salami all by yourself!",
+        seq: [2,1,3,2,1,5,3,1,2,3,2,1,5,3,2,1,3],
+        speed: 680, window: 380
       },
       {
-        name: "Car Bonnet",
-        intro: "Hey hot pants! How about a joyride on that hood!",
-        reply: "Sure hun! At least I won't have to keep playin around with that gearshift.",
-        success: "Holy cow!\nMy rear end is totally overheated! Lets have a cool down break and then shift it to the next gear!",
-        fail: "You shmuck!\nDrive me home at once! From now on you can polish your rod alone.",
-        sequence: [1,3,2,1,5,3,2,1,2,3,1,5,3,2,1,2,3,1],
-        speed: 660,
-        window: 370
+        name: "Car Hood",
+        bg: "🚗",
+        him: "🧑",
+        her: "👩",
+        intro: "Hey hot pants! Joyride on that hood?",
+        reply: "Sure hun! Better than that gearshift.",
+        win: "Holy cow! Rear end overheated! Next gear!",
+        lose: "You shmuck! Polish your rod alone from now on.",
+        seq: [1,3,2,1,5,3,2,1,2,3,1,5,3,2,1,2,3],
+        speed: 640, window: 360
       },
       {
         name: "Oktoberfest",
-        intro: "Yeeeha! What more does a guy need. Wieners, beer and two spicy chicks!",
-        reply: "I'll show you what's inside real bavarian pants!",
-        success: "Christ! What a roller coaster ride!\nWe want more!",
-        fail: "You fake stud! Get your ass outta here!\nWe better get back into that former tent. At least they had some real men in there!",
-        sequence: [1,2,3,1,5,2,3,2,1,5,3,2,1,3,1,2,5,3],
-        speed: 620,
-        window: 350
+        bg: "🍺",
+        him: "🧑",
+        her: "👯",
+        intro: "Yeeeha! Wieners, beer and two spicy chicks!",
+        reply: "Show us what's inside those Bavarian pants!",
+        win: "Christ! What a roller coaster! We want more!",
+        lose: "Fake stud! Get outta here!",
+        seq: [1,2,3,1,5,2,3,2,1,5,3,2,1,3,1,2,5,3],
+        speed: 600, window: 340
       },
       {
         name: "The Pool",
-        intro: "Cool, I made it! My house, my pool, and my own orgy.",
-        reply: "Shut up and get into the water! We're wet and hot. Let's play!",
-        success: "WOW! You're truly the Prince of Porn!",
-        fail: "Now we girls have to help ourselves!\nWhat a setback! Gimme a few minutes and my torpedo is ready to launch again!",
-        sequence: [2,1,3,2,5,1,3,1,2,5,3,2,1,3,2,1,5,3,1],
-        speed: 580,
-        window: 330
+        bg: "🏊",
+        him: "🧑",
+        her: "👩‍🦱",
+        intro: "My house, my pool, my own orgy!",
+        reply: "Shut up and get in the water! We're wet and hot!",
+        win: "WOW! You're truly the Prince of Porn!",
+        lose: "Now we girls have to help ourselves!",
+        seq: [2,1,3,2,5,1,3,1,2,5,3,2,1,3,2,1,5,3,1],
+        speed: 560, window: 320
       }
     ];
 
-    // State
-    let currentScene = 0;
-    let totalScore = 0;
-    let bestStreak = 0;
-    let hits = 0;
-    let misses = 0;
-    let streak = 0;
-    let maxStreakThisScene = 0;
-    let passion = 0;
-    let lives = 3;
-    let sequenceIndex = 0;
-    let currentPrompt = null;
-    let isSpecial = false;
-    let promptTimeout = null;
-    let isPlaying = false;
-    let lastInputTime = 0;
+    let scene = 0, score = 0, bestStreak = 0, lives = 3;
+    let hits = 0, misses = 0, streak = 0, maxStreak = 0, passion = 25;
+    let idx = 0, prompt = null, isSpecial = false, playing = false, timer = null, lastIn = 0;
 
-    // DOM
-    const screens = {
-      intro: document.getElementById('screen-intro'),
-      howto: document.getElementById('screen-howto'),
-      credits: document.getElementById('screen-credits'),
-      sceneIntro: document.getElementById('screen-scene-intro'),
-      play: document.getElementById('screen-play'),
-      result: document.getElementById('screen-result'),
-      gameover: document.getElementById('screen-gameover'),
-      final: document.getElementById('screen-final')
-    };
-    const meter = document.getElementById('passion-meter');
-    const promptEl = document.getElementById('prompt');
-    const feedbackEl = document.getElementById('feedback');
-    const statusText = document.getElementById('status-text');
-    const keys = document.querySelectorAll('.key');
-
-    function showScreen(name) {
-      Object.values(screens).forEach(s => s.classList.remove('active'));
-      screens[name].classList.add('active');
+    const $ = id => document.getElementById(id);
+    const screens = ['s-intro','s-howto','s-scene','s-play','s-result','s-over','s-win'];
+    function show(id) {
+      screens.forEach(s => $(s).classList.remove('active'));
+      $(id).classList.add('active');
     }
 
-    // Buttons
-    document.getElementById('btn-start').onclick = () => {
-      currentScene = 0;
-      totalScore = 0;
-      bestStreak = 0;
-      lives = 3;
-      startSceneIntro();
+    $('btn-start').onclick = () => { scene=0; score=0; bestStreak=0; lives=3; goScene(); };
+    $('btn-howto').onclick = () => show('s-howto');
+    $('btn-back').onclick = () => show('s-intro');
+    $('btn-go').onclick = startPlay;
+    $('btn-next').onclick = () => {
+      scene++;
+      if (scene >= SCENES.length) {
+        $('w-score').textContent = score;
+        $('w-streak').textContent = bestStreak;
+        show('s-win');
+      } else goScene();
     };
-    document.getElementById('btn-howto').onclick = () => showScreen('howto');
-    document.getElementById('btn-credits').onclick = () => showScreen('credits');
-    document.getElementById('btn-back-intro').onclick = () => showScreen('intro');
-    document.getElementById('btn-back-credits').onclick = () => showScreen('intro');
-    document.getElementById('btn-begin-scene').onclick = startPlay;
-    document.getElementById('btn-next').onclick = () => {
-      currentScene++;
-      if (currentScene >= SCENES.length) {
-        document.getElementById('final-score').textContent = totalScore;
-        document.getElementById('final-streak').textContent = bestStreak;
-        showScreen('final');
-      } else {
-        startSceneIntro();
-      }
-    };
-    document.getElementById('btn-retry').onclick = () => {
-      currentScene = 0;
-      totalScore = 0;
-      bestStreak = 0;
-      lives = 3;
-      startSceneIntro();
-    };
-    document.getElementById('btn-menu').onclick = () => showScreen('intro');
-    document.getElementById('btn-menu2').onclick = () => showScreen('intro');
-    document.getElementById('btn-replay').onclick = () => {
-      currentScene = 0;
-      totalScore = 0;
-      bestStreak = 0;
-      lives = 3;
-      startSceneIntro();
-    };
+    $('btn-retry').onclick = () => { scene=0; score=0; bestStreak=0; lives=3; goScene(); };
+    $('btn-again').onclick = () => { scene=0; score=0; bestStreak=0; lives=3; goScene(); };
+    $('btn-menu').onclick = () => show('s-intro');
+    $('btn-menu2').onclick = () => show('s-intro');
 
-    function startSceneIntro() {
-      const s = SCENES[currentScene];
-      document.getElementById('scene-name').textContent = `Scene ${currentScene + 1}: ${s.name}`;
-      document.getElementById('scene-desc').innerHTML = `<strong>You:</strong> ${s.intro}<br><br><strong>Her:</strong> ${s.reply}`;
-      showScreen('sceneIntro');
+    function goScene() {
+      const s = SCENES[scene];
+      $('scene-bg').textContent = s.bg;
+      $('char-him').textContent = s.him;
+      $('char-her').textContent = s.her;
+      $('scene-label').textContent = s.name;
+      $('scene-dialogue').textContent = s.intro + "\n\n" + s.reply;
+      show('s-scene');
     }
 
     function startPlay() {
-      const s = SCENES[currentScene];
-      document.getElementById('play-scene-name').textContent = s.name;
-      hits = 0;
-      misses = 0;
-      streak = 0;
-      maxStreakThisScene = 0;
-      passion = 25;
-      sequenceIndex = 0;
-      isPlaying = true;
-      updateMeter();
-      updateStats();
-      document.getElementById('lives-count').textContent = lives;
-      statusText.textContent = 'GET READY!';
-      promptEl.classList.remove('visible', 'special-prompt');
-      showScreen('play');
-
-      setTimeout(() => {
-        if (isPlaying) nextPrompt();
-      }, 850);
+      const s = SCENES[scene];
+      hits=0; misses=0; streak=0; maxStreak=0; passion=25; idx=0; playing=true;
+      $('lives').textContent = lives;
+      $('streak').textContent = 0;
+      $('scene-name-play').textContent = s.name;
+      $('stage-bg').textContent = s.bg;
+      $('actor-him').textContent = s.him;
+      $('actor-her').textContent = s.her;
+      $('actor-him').classList.add('action');
+      $('actor-her').classList.add('action');
+      $('meter').style.width = '25%';
+      $('prompt').classList.remove('visible','special');
+      show('s-play');
+      setTimeout(() => { if (playing) next(); }, 800);
     }
 
-    function updateMeter() {
-      meter.style.width = Math.min(100, Math.max(0, passion)) + '%';
-    }
+    function next() {
+      if (!playing) return;
+      const s = SCENES[scene];
+      if (idx >= s.seq.length) { end(true); return; }
+      prompt = s.seq[idx++];
+      isSpecial = prompt === 5;
+      const p = $('prompt');
+      p.textContent = prompt;
+      p.classList.add('visible');
+      if (isSpecial) p.classList.add('special'); else p.classList.remove('special');
 
-    function updateStats() {
-      document.getElementById('hit-count').textContent = hits;
-      document.getElementById('miss-count').textContent = misses;
-      document.getElementById('streak-count').textContent = streak;
-    }
-
-    function nextPrompt() {
-      if (!isPlaying) return;
-      const s = SCENES[currentScene];
-      if (sequenceIndex >= s.sequence.length) {
-        endSequence(true);
-        return;
-      }
-      currentPrompt = s.sequence[sequenceIndex];
-      isSpecial = (currentPrompt === 5);
-      sequenceIndex++;
-
-      promptEl.textContent = currentPrompt;
-      promptEl.classList.add('visible');
-      if (isSpecial) promptEl.classList.add('special-prompt');
-      else promptEl.classList.remove('special-prompt');
-
-      statusText.textContent = isSpecial ? 'SPECIAL! Hit 5!' : `Hit ${currentPrompt}!`;
-
-      keys.forEach(k => {
-        k.classList.remove('active', 'active-special', 'hit', 'miss');
-        if (k.dataset.key == currentPrompt) {
-          k.classList.add(isSpecial ? 'active-special' : 'active');
-        }
+      document.querySelectorAll('.key').forEach(k => {
+        k.classList.remove('active','active-special','hit','miss');
+        if (k.dataset.key == prompt) k.classList.add(isSpecial ? 'active-special' : 'active');
       });
 
-      clearTimeout(promptTimeout);
-      promptTimeout = setTimeout(() => {
-        if (isPlaying && currentPrompt !== null) registerMiss();
-      }, s.window);
+      clearTimeout(timer);
+      timer = setTimeout(() => { if (playing && prompt !== null) miss(); }, s.window);
     }
 
-    function registerHit() {
-      if (!isPlaying || currentPrompt === null) return;
+    function hit() {
+      if (!playing || prompt === null) return;
       const now = Date.now();
-      if (now - lastInputTime < 70) return;
-      lastInputTime = now;
-
-      clearTimeout(promptTimeout);
-      hits++;
-      streak++;
-      if (streak > maxStreakThisScene) maxStreakThisScene = streak;
+      if (now - lastIn < 60) return;
+      lastIn = now;
+      clearTimeout(timer);
+      hits++; streak++;
+      if (streak > maxStreak) maxStreak = streak;
       if (streak > bestStreak) bestStreak = streak;
+      passion = Math.min(100, passion + (isSpecial ? 15 : 9));
+      $('meter').style.width = passion + '%';
+      $('streak').textContent = streak;
 
-      const gain = isSpecial ? 16 : 10;
-      passion = Math.min(100, passion + gain);
-      updateMeter();
-      updateStats();
-
-      keys.forEach(k => {
-        if (k.dataset.key == currentPrompt) {
-          k.classList.remove('active', 'active-special');
-          k.classList.add('hit');
-        }
+      document.querySelectorAll('.key').forEach(k => {
+        if (k.dataset.key == prompt) { k.classList.remove('active','active-special'); k.classList.add('hit'); }
       });
-      showFeedback(isSpecial ? 'SPECIAL!' : (streak >= 5 ? 'STREAK!' : 'HIT!'), isSpecial ? 'special' : true);
-      promptEl.classList.remove('visible');
-      currentPrompt = null;
-
-      setTimeout(() => {
-        if (isPlaying) nextPrompt();
-      }, SCENES[currentScene].speed * 0.32);
+      float(isSpecial ? 'SPECIAL!' : (streak>=5 ? 'STREAK!' : 'HIT!'), isSpecial ? 'special' : 'good');
+      if (Math.random() > 0.4) {
+        const h = $('hearts');
+        h.classList.remove('show');
+        void h.offsetWidth;
+        h.classList.add('show');
+      }
+      $('prompt').classList.remove('visible');
+      prompt = null;
+      setTimeout(() => { if (playing) next(); }, SCENES[scene].speed * 0.3);
     }
 
-    function registerMiss() {
-      if (!isPlaying || currentPrompt === null) return;
-      clearTimeout(promptTimeout);
-      misses++;
-      streak = 0;
-      passion = Math.max(0, passion - 16);
-      updateMeter();
-      updateStats();
+    function miss() {
+      if (!playing || prompt === null) return;
+      clearTimeout(timer);
+      misses++; streak = 0;
+      passion = Math.max(0, passion - 15);
+      $('meter').style.width = passion + '%';
+      $('streak').textContent = 0;
 
-      keys.forEach(k => {
-        if (k.dataset.key == currentPrompt) {
-          k.classList.remove('active', 'active-special');
-          k.classList.add('miss');
-        }
+      document.querySelectorAll('.key').forEach(k => {
+        if (k.dataset.key == prompt) { k.classList.remove('active','active-special'); k.classList.add('miss'); }
       });
-      showFeedback('FLOP!', false);
-      promptEl.classList.remove('visible');
-      currentPrompt = null;
+      float('FLOP!', 'bad');
+      $('prompt').classList.remove('visible');
+      prompt = null;
 
-      if (passion <= 5 || misses >= 4) {
+      if (passion <= 8 || misses >= 4) {
         lives--;
-        document.getElementById('lives-count').textContent = lives;
-        if (lives <= 0) {
-          setTimeout(() => endSequence(false, true), 450);
-          return;
-        }
+        $('lives').textContent = lives;
+        if (lives <= 0) { setTimeout(() => end(false, true), 400); return; }
       }
+      if (passion <= 0) { setTimeout(() => end(false), 350); return; }
+      setTimeout(() => { if (playing) next(); }, SCENES[scene].speed * 0.35);
+    }
 
-      if (passion <= 0) {
-        setTimeout(() => endSequence(false), 400);
+    function float(txt, type) {
+      const f = $('feedback');
+      f.textContent = txt;
+      f.className = 'feedback-float show ' + type;
+      setTimeout(() => f.classList.remove('show'), 450);
+    }
+
+    function end(ok, forced = false) {
+      playing = false;
+      clearTimeout(timer);
+      prompt = null;
+      $('actor-him').classList.remove('action');
+      $('actor-her').classList.remove('action');
+      document.querySelectorAll('.key').forEach(k => k.classList.remove('active','active-special','hit','miss'));
+
+      if (forced || lives <= 0) {
+        $('o-score').textContent = score;
+        $('o-scenes').textContent = scene;
+        show('s-over');
         return;
       }
 
-      setTimeout(() => {
-        if (isPlaying) nextPrompt();
-      }, SCENES[currentScene].speed * 0.38);
-    }
+      const success = passion >= 78;
+      const bonus = success ? 70 + maxStreak * 7 : 0;
+      const sc = Math.round(hits * 13 - misses * 8 + bonus + passion * 0.5);
+      score += Math.max(0, sc);
 
-    function showFeedback(text, type) {
-      feedbackEl.textContent = text;
-      feedbackEl.className = 'feedback show ' + (type === 'special' ? 'special' : type ? 'good' : 'bad');
-      setTimeout(() => feedbackEl.classList.remove('show'), 480);
-    }
+      $('result-emoji').textContent = success ? '🔥' : '😅';
+      $('result-title').textContent = success ? 'YOU MADE IT!' : 'You flopped…';
+      $('result-title').className = 'result-title ' + (success ? 'win' : 'lose');
+      $('result-text').textContent = success ? SCENES[scene].win : SCENES[scene].lose;
+      $('r-hits').textContent = hits;
+      $('r-streak').textContent = maxStreak;
+      $('r-score').textContent = Math.max(0, sc);
+      $('bonus').textContent = bonus > 0 ? `LEVEL BONUS +${bonus}  ·  HIT-STREAK ${maxStreak}` : '';
 
-    function endSequence(success, forcedGameOver = false) {
-      isPlaying = false;
-      clearTimeout(promptTimeout);
-      currentPrompt = null;
-      promptEl.classList.remove('visible');
-      keys.forEach(k => k.classList.remove('active', 'active-special', 'hit', 'miss'));
-
-      if (forcedGameOver || lives <= 0) {
-        document.getElementById('go-score').textContent = totalScore;
-        document.getElementById('go-scenes').textContent = currentScene;
-        document.getElementById('gameover-msg').textContent =
-          "Did you spank your monkey too often or what's wrong with you?";
-        showScreen('gameover');
-        return;
-      }
-
-      const sceneSuccess = passion >= 80;
-      const levelBonus = sceneSuccess ? 80 + maxStreakThisScene * 8 : 0;
-      const sceneScore = Math.round(hits * 14 - misses * 9 + levelBonus + passion * 0.6);
-      totalScore += Math.max(0, sceneScore);
-
-      const box = document.getElementById('result-box');
-      box.className = 'result-box ' + (sceneSuccess ? 'success' : 'fail');
-      document.getElementById('result-title').textContent = sceneSuccess ? 'YOU MADE IT!' : 'You flopped…';
-      document.getElementById('result-msg').textContent = sceneSuccess
-        ? SCENES[currentScene].success
-        : SCENES[currentScene].fail;
-      document.getElementById('res-hits').textContent = hits;
-      document.getElementById('res-streak').textContent = maxStreakThisScene;
-      document.getElementById('res-score').textContent = Math.max(0, sceneScore);
-      document.getElementById('bonus-line').textContent = levelBonus > 0
-        ? `LEVEL BONUS: +${levelBonus}  (HIT-STREAK: ${maxStreakThisScene})`
-        : '';
-
-      if (!sceneSuccess) {
+      if (!success) {
         lives--;
         if (lives <= 0) {
           setTimeout(() => {
-            document.getElementById('go-score').textContent = totalScore;
-            document.getElementById('go-scenes').textContent = currentScene + 1;
-            showScreen('gameover');
-          }, 1200);
+            $('o-score').textContent = score;
+            $('o-scenes').textContent = scene + 1;
+            show('s-over');
+          }, 1100);
           return;
         }
       }
-
-      const nextBtn = document.getElementById('btn-next');
-      nextBtn.textContent = currentScene === SCENES.length - 1
-        ? (sceneSuccess ? 'Claim the Crown' : 'See Final Score')
-        : (sceneSuccess ? 'Next Scene' : 'Continue Anyway');
-      showScreen('result');
+      $('btn-next').textContent = scene === SCENES.length - 1 ? (success ? 'CLAIM THE CROWN' : 'FINISH') : (success ? 'NEXT SCENE' : 'CONTINUE');
+      show('s-result');
     }
 
-    // Input
-    function handleInput(key) {
-      if (!isPlaying || currentPrompt === null) return;
-      if (String(key) === String(currentPrompt)) {
-        registerHit();
-      } else {
-        registerMiss();
-      }
+    function input(k) {
+      if (!playing || prompt === null) return;
+      if (String(k) === String(prompt)) hit();
+      else miss();
     }
-
     document.addEventListener('keydown', e => {
-      if (['1','2','3','5'].includes(e.key)) {
-        e.preventDefault();
-        handleInput(e.key);
-      }
+      if (['1','2','3','5'].includes(e.key)) { e.preventDefault(); input(e.key); }
     });
-
-    keys.forEach(k => {
-      k.addEventListener('click', () => handleInput(k.dataset.key));
-      k.addEventListener('touchstart', e => {
-        e.preventDefault();
-        handleInput(k.dataset.key);
-      }, {passive: false});
+    document.querySelectorAll('.key').forEach(k => {
+      k.addEventListener('click', () => input(k.dataset.key));
+      k.addEventListener('touchstart', e => { e.preventDefault(); input(k.dataset.key); }, {passive:false});
     });
   </script>
 </body>
