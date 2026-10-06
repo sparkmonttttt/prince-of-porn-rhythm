@@ -1,40 +1,31 @@
 # Prince of Porn – Rhythm Edition
 
-A short, comedic adult **rhythm / QTE browser game** inspired by the classic 2007 Java ME title *Prince of Porn* by Brainmelt.
+Faithful browser remake of the classic 2007 Java ME adult rhythm/QTE game **Prince of Porn** by Brainmelt.
 
-You progress through five steamy scenarios. Hit the numbered buttons (1 / 2 / 3) in time to keep the Passion meter rising. Fill it to succeed; miss too many and you flop.
+Dialogue, instructions, scoring terms (HIT-STREAK, LEVEL BONUS), 3-lives fail condition, Key 5 special events, and scene structure extracted directly from the original 128×160 JAR.
 
-## Play locally
+## Play
 
-Just open `index.html` in any modern browser. No build step required.
+Open `index.html` in any modern browser, or deploy to Vercel.
 
-## Deploy to Vercel (recommended)
+## Deploy to Vercel
 
-1. This repository is already on your GitHub:  
-   https://github.com/sparkmonttttt/prince-of-porn-rhythm
-
-2. Go to [vercel.com](https://vercel.com) → **Add New Project** → Import the GitHub repo.
-
-3. Framework Preset: **Other** (or leave blank).  
-   Root Directory: `/`  
-   Build Command: leave empty  
-   Output Directory: leave empty (or `.`)
-
-4. Click **Deploy**.  
-   You’ll get a public URL like `https://prince-of-porn-rhythm.vercel.app`.
-
-Vercel will automatically redeploy on every push to `main`.
+1. Repo: https://github.com/sparkmonttttt/prince-of-porn-rhythm
+2. Import the repo on vercel.com
+3. Framework: Other / no build command
+4. Deploy
 
 ## Controls
 
-- Keyboard: press **1**, **2** or **3**
-- Touch / mouse: tap the on-screen buttons
+- Keys **1 / 2 / 3** for normal hits
+- Key **5** for special events (bigger excitement boost)
+- Or tap the on-screen buttons
 
-## Content warning
+## Content
 
 18+ only. Cartoon-style comedic adult situations. All characters are consenting adults.
 
 ## Credits
 
-Inspired by Brainmelt’s *Prince of Porn* (Java ME, ~2007).  
-This is a modern browser remake created for fun and educational purposes.
+Original game © Brainmelt (2007)  
+Browser remake for educational/fun purposes.
