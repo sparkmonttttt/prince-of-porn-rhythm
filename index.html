@@ -5,683 +5,516 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
   <title>Prince of Porn</title>
   <style>
-    :root {
-      --bg: #1a0a12;
-      --card: #2a1220;
-      --accent: #ff4d8d;
-      --accent2: #ff9f43;
-      --success: #2ecc71;
-      --fail: #e74c3c;
-      --special: #c56cf0;
-      --text: #fce4ec;
-    }
     * { box-sizing: border-box; margin: 0; padding: 0; }
     body {
-      font-family: system-ui, -apple-system, sans-serif;
-      background: #12060c;
-      color: var(--text);
-      min-height: 100vh;
+      background: #111;
       display: flex;
       align-items: center;
       justify-content: center;
-      padding: 8px;
+      min-height: 100vh;
+      font-family: system-ui, sans-serif;
       user-select: none;
       -webkit-user-select: none;
       overflow: hidden;
     }
-    .phone {
-      width: 100%;
-      max-width: 360px;
-      background: var(--card);
-      border-radius: 18px;
-      overflow: hidden;
-      box-shadow: 0 0 0 3px #3d1a2a, 0 20px 50px rgba(0,0,0,0.7);
-      display: flex;
-      flex-direction: column;
-      height: 620px;
-      max-height: 95vh;
-    }
-    .topbar {
-      background: linear-gradient(90deg, #ff4d8d, #ff9f43);
-      color: #1a0a12;
-      text-align: center;
-      font-weight: 900;
-      font-size: 1.05rem;
-      padding: 10px;
-      letter-spacing: 1px;
-    }
-    .screen { display: none; flex: 1; flex-direction: column; padding: 12px; overflow: hidden; }
-    .screen.active { display: flex; }
-
-    .intro-content { flex: 1; display: flex; flex-direction: column; justify-content: center; gap: 12px; }
-    .logo-area {
-      text-align: center;
-      font-size: 3.5rem;
-      margin-bottom: 8px;
-      animation: bounce 1.2s ease-in-out infinite;
-    }
-    @keyframes bounce {
-      0%,100% { transform: translateY(0); }
-      50% { transform: translateY(-10px); }
-    }
-    .title { text-align: center; font-size: 1.4rem; font-weight: 900; color: var(--accent); }
-    .subtitle { text-align: center; font-size: 0.9rem; color: #c9a0b0; }
-    .btn {
-      width: 100%;
-      padding: 14px;
-      border: none;
-      border-radius: 12px;
-      font-size: 1.05rem;
-      font-weight: 800;
-      cursor: pointer;
-      background: linear-gradient(90deg, var(--accent), var(--accent2));
-      color: #1a0a12;
-    }
-    .btn:active { transform: scale(0.97); }
-    .btn.ghost {
-      background: transparent;
-      border: 2px solid var(--accent);
-      color: var(--accent);
-    }
-
-    .scene-visual {
-      flex: 1;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
+    #wrap {
       position: relative;
-      background: #1f0c16;
-      border-radius: 14px;
-      margin-bottom: 10px;
+      width: 360px;
+      max-width: 100vw;
+      height: 640px;
+      max-height: 100vh;
+      background: #1a1020;
+      border-radius: 12px;
       overflow: hidden;
+      box-shadow: 0 0 0 4px #333, 0 20px 60px rgba(0,0,0,0.8);
     }
-    .scene-bg {
-      position: absolute;
-      inset: 0;
-      opacity: 0.25;
-      font-size: 6rem;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-    }
-    .char-pair {
-      display: flex;
-      gap: 20px;
-      align-items: flex-end;
-      z-index: 2;
-    }
-    .char {
-      font-size: 4.5rem;
-      filter: drop-shadow(0 8px 12px rgba(0,0,0,0.5));
-    }
-    .scene-label {
-      z-index: 3;
-      background: rgba(0,0,0,0.65);
-      padding: 6px 14px;
-      border-radius: 20px;
-      font-weight: 800;
-      font-size: 0.95rem;
-      color: var(--accent2);
-      margin-top: 10px;
-    }
-    .dialogue-box {
-      background: #3a1a2a;
-      border-radius: 10px;
-      padding: 10px 12px;
-      font-size: 0.88rem;
-      line-height: 1.35;
-      margin-bottom: 10px;
-      border-left: 3px solid var(--accent);
-      max-height: 70px;
-      overflow: hidden;
-      white-space: pre-line;
-    }
-
-    .play-hud {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      margin-bottom: 6px;
-      font-size: 0.85rem;
-    }
-    .lives-display { color: var(--accent); font-weight: 800; }
-    .streak-display { color: var(--accent2); font-weight: 700; }
-    .meter-wrap {
-      height: 14px;
-      background: #3a1a2a;
-      border-radius: 10px;
-      overflow: hidden;
-      border: 1px solid rgba(255,77,141,0.4);
-      margin-bottom: 8px;
-    }
-    .meter {
+    canvas {
+      display: block;
+      width: 100%;
       height: 100%;
-      width: 20%;
-      background: linear-gradient(90deg, #ff4d8d, #ff9f43, #2ecc71);
-      border-radius: 10px;
-      transition: width 0.1s linear;
+      image-rendering: pixelated;
     }
-    .play-stage {
-      flex: 1;
-      position: relative;
-      background: #1a0c14;
-      border-radius: 12px;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      overflow: hidden;
-      margin-bottom: 8px;
-    }
-    .stage-bg {
-      position: absolute;
-      inset: 0;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 7rem;
-      opacity: 0.15;
-    }
-    .actors {
-      display: flex;
-      gap: 16px;
-      z-index: 2;
-      align-items: flex-end;
-    }
-    .actor {
-      font-size: 4.2rem;
-      transition: transform 0.12s;
-    }
-    .actor.action {
-      animation: actionBounce 0.28s ease infinite alternate;
-    }
-    @keyframes actionBounce {
-      from { transform: translateY(0) scaleY(1); }
-      to { transform: translateY(-14px) scaleY(1.08); }
-    }
-    .prompt-big {
-      position: absolute;
-      top: 12%;
-      font-size: 5rem;
-      font-weight: 900;
-      color: var(--accent2);
-      text-shadow: 0 0 30px rgba(255,159,67,0.7);
-      opacity: 0;
-      z-index: 10;
-      transition: opacity 0.08s;
-    }
-    .prompt-big.visible { opacity: 1; animation: promptPulse 0.3s ease-in-out infinite alternate; }
-    .prompt-big.special {
-      color: var(--special);
-      text-shadow: 0 0 35px rgba(197,108,240,0.8);
-    }
-    @keyframes promptPulse {
-      from { transform: scale(1); }
-      to { transform: scale(1.15); }
-    }
-    .feedback-float {
-      position: absolute;
-      top: 30%;
-      font-size: 1.6rem;
-      font-weight: 900;
-      opacity: 0;
-      z-index: 11;
-      pointer-events: none;
-    }
-    .feedback-float.show {
-      animation: floatUp 0.5s ease-out forwards;
-    }
-    @keyframes floatUp {
-      0% { opacity: 1; transform: translateY(0); }
-      100% { opacity: 0; transform: translateY(-40px); }
-    }
-    .feedback-float.good { color: var(--success); }
-    .feedback-float.bad { color: var(--fail); }
-    .feedback-float.special { color: var(--special); }
-    .hearts {
-      position: absolute;
-      top: 25%;
-      font-size: 1.8rem;
-      opacity: 0;
-      pointer-events: none;
-      z-index: 9;
-    }
-    .hearts.show { animation: floatHeart 0.8s ease-out forwards; }
-    @keyframes floatHeart {
-      0% { opacity: 1; transform: translateY(0) scale(1); }
-      100% { opacity: 0; transform: translateY(-60px) scale(1.4); }
-    }
-
     .keys {
+      position: absolute;
+      bottom: 12px;
+      left: 12px;
+      right: 12px;
       display: grid;
       grid-template-columns: repeat(4, 1fr);
       gap: 8px;
+      z-index: 20;
     }
     .key {
-      aspect-ratio: 1;
-      border-radius: 14px;
-      border: 3px solid rgba(255,77,141,0.4);
-      background: #3a1a2a;
-      color: var(--text);
-      font-size: 1.7rem;
+      height: 56px;
+      border-radius: 10px;
+      border: 3px solid #ff6b9d;
+      background: #3a2040;
+      color: #fff;
+      font-size: 1.5rem;
       font-weight: 900;
       display: flex;
       align-items: center;
       justify-content: center;
       cursor: pointer;
-      transition: all 0.07s;
+      transition: 0.06s;
     }
-    .key[data-key="5"] { border-color: rgba(197,108,240,0.5); font-size: 1.3rem; }
-    .key.active {
-      background: var(--accent);
-      border-color: #fff;
-      color: #1a0a12;
-      transform: scale(1.08);
-      box-shadow: 0 0 18px rgba(255,77,141,0.6);
+    .key:active, .key.active {
+      background: #ff4d8d;
+      transform: scale(1.06);
+      box-shadow: 0 0 16px #ff4d8d;
     }
-    .key.active-special {
-      background: var(--special);
-      border-color: #fff;
-      color: #fff;
-      transform: scale(1.08);
-      box-shadow: 0 0 18px rgba(197,108,240,0.7);
+    .key.special-active {
+      background: #c56cf0;
+      border-color: #e0a0ff;
+      box-shadow: 0 0 16px #c56cf0;
     }
-    .key.hit { background: var(--success); border-color: #fff; }
-    .key.miss { background: var(--fail); border-color: #fff; }
-
-    .result-center {
-      flex: 1;
+    .key.hit { background: #2ecc71; border-color: #fff; }
+    .key.miss { background: #e74c3c; border-color: #fff; }
+    .overlay {
+      position: absolute;
+      inset: 0;
+      background: rgba(10,5,15,0.92);
       display: flex;
       flex-direction: column;
       align-items: center;
       justify-content: center;
+      z-index: 30;
+      color: #fff;
+      padding: 24px;
       text-align: center;
-      gap: 10px;
     }
-    .big-emoji { font-size: 4rem; }
-    .result-title { font-size: 1.5rem; font-weight: 900; }
-    .result-title.win { color: var(--success); }
-    .result-title.lose { color: var(--fail); }
-    .score-row {
-      display: flex;
-      gap: 20px;
-      justify-content: center;
-      font-size: 0.9rem;
+    .overlay.hidden { display: none; }
+    .overlay h1 { font-size: 1.6rem; color: #ff4d8d; margin-bottom: 8px; }
+    .overlay p { font-size: 0.95rem; color: #e0c0d0; margin-bottom: 16px; line-height: 1.4; white-space: pre-line; }
+    .btn {
+      width: 100%;
+      max-width: 260px;
+      padding: 14px;
+      border: none;
+      border-radius: 10px;
+      font-size: 1.1rem;
+      font-weight: 800;
+      cursor: pointer;
+      background: linear-gradient(90deg,#ff4d8d,#ff9f43);
+      color: #1a0a12;
+      margin: 6px 0;
     }
-    .score-row strong { display: block; font-size: 1.4rem; color: var(--accent2); }
+    .btn.ghost {
+      background: transparent;
+      border: 2px solid #ff4d8d;
+      color: #ff4d8d;
+    }
   </style>
 </head>
 <body>
-  <div class="phone">
-    <div class="topbar">PRINCE OF PORN</div>
-
-    <div id="s-intro" class="screen active">
-      <div class="intro-content">
-        <div class="logo-area">🍌</div>
-        <div class="title">PRINCE OF PORN</div>
-        <div class="subtitle">Are you the real Prince…<br>or just another monkey-spank?</div>
-        <p style="text-align:center;font-size:0.85rem;color:#c9a0b0;margin-top:8px;">
-          Hit 1-3 in time. Key 5 = special.<br>3 lives. Don’t flop.
-        </p>
-        <button class="btn" id="btn-start">NEW GAME</button>
-        <button class="btn ghost" id="btn-howto">HOW TO PLAY</button>
-      </div>
+  <div id="wrap">
+    <canvas id="c" width="176" height="280"></canvas>
+    <div class="keys" id="keys" style="display:none;">
+      <div class="key" data-k="1">1</div>
+      <div class="key" data-k="2">2</div>
+      <div class="key" data-k="3">3</div>
+      <div class="key" data-k="5">5</div>
     </div>
 
-    <div id="s-howto" class="screen">
-      <div class="intro-content">
-        <div class="title">GAMEPLAY</div>
-        <p style="font-size:0.95rem;line-height:1.5;color:#e0c0d0;">
-          Quickly press keys <strong>1-3</strong> as they appear.<br><br>
-          Key <strong>5</strong> triggers a special event.<br><br>
-          Fill the excitement bar.<br>
-          Miss too often and you lose a life.<br><br>
-          <strong>3 lives</strong> → Game Over.
-        </p>
-        <button class="btn" id="btn-back">GOT IT</button>
-      </div>
+    <div class="overlay" id="menu">
+      <div style="font-size:3rem;margin-bottom:8px;">🍌</div>
+      <h1>PRINCE OF PORN</h1>
+      <p>Are you the real Prince…<br>or just another monkey-spank?</p>
+      <button class="btn" id="btn-start">NEW GAME</button>
+      <button class="btn ghost" id="btn-howto">HOW TO PLAY</button>
     </div>
 
-    <div id="s-scene" class="screen">
-      <div class="scene-visual">
-        <div class="scene-bg" id="scene-bg">🚽</div>
-        <div class="char-pair">
-          <div class="char" id="char-him">🧑</div>
-          <div class="char" id="char-her">👩</div>
-        </div>
-        <div class="scene-label" id="scene-label">Bathroom</div>
-      </div>
-      <div class="dialogue-box" id="scene-dialogue"></div>
+    <div class="overlay hidden" id="howto">
+      <h1>GAMEPLAY</h1>
+      <p>Press 1-3 when they appear.
+Key 5 = special event.
+
+Fill the bar. Miss too much and lose a life.
+3 lives → Game Over.</p>
+      <button class="btn" id="btn-back">GOT IT</button>
+    </div>
+
+    <div class="overlay hidden" id="scene-intro">
+      <h1 id="si-title">Bathroom</h1>
+      <p id="si-text"></p>
       <button class="btn" id="btn-go">GET READY!</button>
     </div>
 
-    <div id="s-play" class="screen">
-      <div class="play-hud">
-        <div class="lives-display">❤ <span id="lives">3</span></div>
-        <div id="scene-name-play" style="font-weight:700;color:var(--accent2)">Bathroom</div>
-        <div class="streak-display">🔥 <span id="streak">0</span></div>
-      </div>
-      <div class="meter-wrap"><div class="meter" id="meter"></div></div>
-      <div class="play-stage">
-        <div class="stage-bg" id="stage-bg">🚽</div>
-        <div class="actors">
-          <div class="actor" id="actor-him">🧑</div>
-          <div class="actor" id="actor-her">👩</div>
-        </div>
-        <div class="prompt-big" id="prompt">1</div>
-        <div class="feedback-float" id="feedback"></div>
-        <div class="hearts" id="hearts">💕</div>
-      </div>
-      <div class="keys">
-        <div class="key" data-key="1">1</div>
-        <div class="key" data-key="2">2</div>
-        <div class="key" data-key="3">3</div>
-        <div class="key" data-key="5">5</div>
-      </div>
-    </div>
-
-    <div id="s-result" class="screen">
-      <div class="result-center">
-        <div class="big-emoji" id="result-emoji">🔥</div>
-        <div class="result-title" id="result-title">YOU MADE IT!</div>
-        <div class="dialogue-box" id="result-text" style="text-align:center;"></div>
-        <div class="score-row">
-          <div>Hits<strong id="r-hits">0</strong></div>
-          <div>Streak<strong id="r-streak">0</strong></div>
-          <div>Score<strong id="r-score">0</strong></div>
-        </div>
-        <div id="bonus" style="color:var(--accent2);font-weight:700;font-size:0.9rem;"></div>
-      </div>
+    <div class="overlay hidden" id="result">
+      <div style="font-size:2.5rem;" id="r-emoji">🔥</div>
+      <h1 id="r-title">YOU MADE IT!</h1>
+      <p id="r-text"></p>
+      <p style="color:#ff9f43;font-weight:700;" id="r-score"></p>
       <button class="btn" id="btn-next">NEXT</button>
     </div>
 
-    <div id="s-over" class="screen">
-      <div class="result-center">
-        <div class="big-emoji">🍌</div>
-        <div class="result-title lose">GAME OVER</div>
-        <div class="dialogue-box" style="text-align:center;">
-          Did you spank your monkey too often or what's wrong with you?
-        </div>
-        <div class="score-row">
-          <div>Score<strong id="o-score">0</strong></div>
-          <div>Scenes<strong id="o-scenes">0</strong></div>
-        </div>
-      </div>
+    <div class="overlay hidden" id="gameover">
+      <div style="font-size:2.5rem;">🍌</div>
+      <h1 style="color:#e74c3c;">GAME OVER</h1>
+      <p>Did you spank your monkey too often or what's wrong with you?</p>
+      <p style="color:#ff9f43;font-weight:700;" id="go-score"></p>
       <button class="btn" id="btn-retry">TRY AGAIN</button>
       <button class="btn ghost" id="btn-menu">MENU</button>
     </div>
 
-    <div id="s-win" class="screen">
-      <div class="result-center">
-        <div class="big-emoji">👑</div>
-        <div class="result-title win">YOU MADE IT!</div>
-        <div class="dialogue-box" style="text-align:center;">
-          WOW! You're truly the Prince of Porn!
-        </div>
-        <div class="score-row">
-          <div>Total<strong id="w-score">0</strong></div>
-          <div>Best Streak<strong id="w-streak">0</strong></div>
-        </div>
-      </div>
+    <div class="overlay hidden" id="win">
+      <div style="font-size:2.5rem;">👑</div>
+      <h1 style="color:#2ecc71;">YOU MADE IT!</h1>
+      <p>WOW! You're truly the Prince of Porn!</p>
+      <p style="color:#ff9f43;font-weight:700;" id="w-score"></p>
       <button class="btn" id="btn-again">PLAY AGAIN</button>
       <button class="btn ghost" id="btn-menu2">MENU</button>
     </div>
   </div>
 
   <script>
+    const canvas = document.getElementById('c');
+    const ctx = canvas.getContext('2d');
+    const W = 176, H = 280;
+
+    function resize() {
+      const wrap = document.getElementById('wrap');
+      const scale = Math.min(wrap.clientWidth / W, wrap.clientHeight / H);
+      canvas.style.width = (W * scale) + 'px';
+      canvas.style.height = (H * scale) + 'px';
+    }
+    window.addEventListener('resize', resize);
+    resize();
+
     const SCENES = [
-      {
-        name: "Bathroom",
-        bg: "🚽",
-        him: "🧑",
-        her: "👩",
-        intro: "Ok Girls, how about a hot ride in a scenic location!",
-        reply: "Show us your best bathroom polka!",
-        win: "You Stud! Wanna be our personal house stallion?!",
-        lose: "You Loser! Not even good enough for toilet boy!",
-        seq: [1,2,1,3,2,1,5,2,1,3,1,2,3,1,2,5,1],
-        speed: 740, window: 400
-      },
-      {
-        name: "Pipe Job",
-        bg: "🔧",
-        him: "🧑",
-        her: "👩‍🦰",
-        intro: "Hey lady! I'm here to lay out some pipes.",
-        reply: "Oh, the new pipe cleaner! You've got my attention.",
-        win: "Oh my god! Stay for dinner? More strokin for dessert.",
-        lose: "You wuss! Stroke your salami all by yourself!",
-        seq: [2,1,3,2,1,5,3,1,2,3,2,1,5,3,2,1,3],
-        speed: 680, window: 380
-      },
-      {
-        name: "Car Hood",
-        bg: "🚗",
-        him: "🧑",
-        her: "👩",
-        intro: "Hey hot pants! Joyride on that hood?",
-        reply: "Sure hun! Better than that gearshift.",
-        win: "Holy cow! Rear end overheated! Next gear!",
-        lose: "You shmuck! Polish your rod alone from now on.",
-        seq: [1,3,2,1,5,3,2,1,2,3,1,5,3,2,1,2,3],
-        speed: 640, window: 360
-      },
-      {
-        name: "Oktoberfest",
-        bg: "🍺",
-        him: "🧑",
-        her: "👯",
-        intro: "Yeeeha! Wieners, beer and two spicy chicks!",
-        reply: "Show us what's inside those Bavarian pants!",
-        win: "Christ! What a roller coaster! We want more!",
-        lose: "Fake stud! Get outta here!",
-        seq: [1,2,3,1,5,2,3,2,1,5,3,2,1,3,1,2,5,3],
-        speed: 600, window: 340
-      },
-      {
-        name: "The Pool",
-        bg: "🏊",
-        him: "🧑",
-        her: "👩‍🦱",
-        intro: "My house, my pool, my own orgy!",
-        reply: "Shut up and get in the water! We're wet and hot!",
-        win: "WOW! You're truly the Prince of Porn!",
-        lose: "Now we girls have to help ourselves!",
-        seq: [2,1,3,2,5,1,3,1,2,5,3,2,1,3,2,1,5,3,1],
-        speed: 560, window: 320
-      }
+      { name:"Bathroom", intro:"Ok Girls, how about a hot ride in a scenic location!", reply:"Show us your best bathroom polka!", win:"You Stud! Wanna be our house stallion?!", lose:"You Loser! Not even good enough for toilet boy!", seq:[1,2,1,3,2,1,5,2,1,3,1,2,3,1,2,5,1], speed:720, window:390, bg:"bath" },
+      { name:"Pipe Job", intro:"Hey lady! I'm here to lay out some pipes.", reply:"Oh the new pipe cleaner! You've got my attention.", win:"Oh my god! Stay for dinner?", lose:"You wuss! Stroke it yourself!", seq:[2,1,3,2,1,5,3,1,2,3,2,1,5,3,2,1,3], speed:660, window:370, bg:"kitchen" },
+      { name:"Car Hood", intro:"Hey hot pants! Joyride on that hood?", reply:"Sure hun! Better than that gearshift.", win:"Holy cow! Next gear!", lose:"Polish your rod alone!", seq:[1,3,2,1,5,3,2,1,2,3,1,5,3,2,1,2,3], speed:620, window:350, bg:"car" },
+      { name:"Oktoberfest", intro:"Yeeeha! Wieners, beer and two spicy chicks!", reply:"Show us those Bavarian pants!", win:"What a roller coaster! More!", lose:"Fake stud! Get out!", seq:[1,2,3,1,5,2,3,2,1,5,3,2,1,3,1,2,5,3], speed:580, window:330, bg:"fest" },
+      { name:"The Pool", intro:"My house, my pool, my own orgy!", reply:"Get in the water! We're wet and hot!", win:"WOW! You're truly the Prince of Porn!", lose:"Now we girls help ourselves!", seq:[2,1,3,2,5,1,3,1,2,5,3,2,1,3,2,1,5,3,1], speed:540, window:310, bg:"pool" }
     ];
 
-    let scene = 0, score = 0, bestStreak = 0, lives = 3;
-    let hits = 0, misses = 0, streak = 0, maxStreak = 0, passion = 25;
-    let idx = 0, prompt = null, isSpecial = false, playing = false, timer = null, lastIn = 0;
+    let scene=0, score=0, bestStreak=0, lives=3;
+    let hits=0, misses=0, streak=0, maxStreak=0, passion=30;
+    let idx=0, curPrompt=null, isSpecial=false, playing=false, timer=null, lastIn=0;
+    let animT=0;
 
-    const $ = id => document.getElementById(id);
-    const screens = ['s-intro','s-howto','s-scene','s-play','s-result','s-over','s-win'];
-    function show(id) {
-      screens.forEach(s => $(s).classList.remove('active'));
-      $(id).classList.add('active');
+    function drawChar(x, y, type, frame) {
+      ctx.save();
+      ctx.translate(x, y);
+      const by = Math.sin(frame * 0.3) * 3;
+      if (type === 0) {
+        ctx.fillStyle = '#2a4a8a';
+        ctx.fillRect(-8, 28+by, 7, 18);
+        ctx.fillRect(2, 28+by, 7, 18);
+        ctx.fillStyle = '#e8c040';
+        ctx.fillRect(-10, 8+by, 20, 22);
+        ctx.fillStyle = '#f5c8a0';
+        ctx.fillRect(-16, 10+by, 6, 16);
+        ctx.fillRect(10, 10+by, 6, 16);
+        ctx.fillRect(-9, -12+by, 18, 18);
+        ctx.fillStyle = '#f0e050';
+        ctx.fillRect(-10, -18+by, 20, 8);
+        ctx.fillRect(-12, -14+by, 4, 6);
+        ctx.fillRect(8, -14+by, 4, 6);
+        ctx.fillStyle = '#222';
+        ctx.fillRect(-5, -6+by, 3, 3);
+        ctx.fillRect(3, -6+by, 3, 3);
+        ctx.fillRect(-2, 2+by, 5, 2);
+      } else {
+        const skin = '#f5c8a0';
+        const hair = type===1 ? '#f0d050' : (type===2 ? '#1a1a1a' : '#c04020');
+        ctx.fillStyle = '#222';
+        ctx.fillRect(-7, 30+by, 6, 16);
+        ctx.fillRect(2, 30+by, 6, 16);
+        ctx.fillStyle = skin;
+        ctx.fillRect(-11, 6+by, 22, 26);
+        ctx.beginPath();
+        ctx.arc(-6, 14+by, 7, 0, Math.PI*2);
+        ctx.arc(6, 14+by, 7, 0, Math.PI*2);
+        ctx.fill();
+        ctx.fillStyle = '#e09080';
+        ctx.beginPath();
+        ctx.arc(-6, 15+by, 2.5, 0, Math.PI*2);
+        ctx.arc(6, 15+by, 2.5, 0, Math.PI*2);
+        ctx.fill();
+        ctx.fillStyle = skin;
+        ctx.fillRect(-17, 8+by, 6, 18);
+        ctx.fillRect(11, 8+by, 6, 18);
+        ctx.fillRect(-9, -14+by, 18, 18);
+        ctx.fillStyle = hair;
+        ctx.fillRect(-11, -20+by, 22, 10);
+        if (type === 1) {
+          ctx.fillRect(-13, -16+by, 5, 8);
+          ctx.fillRect(9, -16+by, 5, 8);
+        } else if (type === 2) {
+          ctx.fillRect(-12, -12+by, 6, 14);
+          ctx.fillRect(7, -12+by, 6, 14);
+        }
+        ctx.fillStyle = '#222';
+        ctx.fillRect(-5, -8+by, 3, 3);
+        ctx.fillRect(3, -8+by, 3, 3);
+        ctx.fillStyle = '#e05060';
+        ctx.fillRect(-3, 0+by, 6, 3);
+      }
+      ctx.restore();
     }
 
-    $('btn-start').onclick = () => { scene=0; score=0; bestStreak=0; lives=3; goScene(); };
-    $('btn-howto').onclick = () => show('s-howto');
-    $('btn-back').onclick = () => show('s-intro');
+    function drawBG(type) {
+      ctx.fillStyle = '#4a3a3a';
+      ctx.fillRect(0, 200, W, 80);
+      if (type === 'bath') {
+        ctx.fillStyle = '#e8d0c0';
+        ctx.fillRect(0, 0, W, 200);
+        ctx.fillStyle = '#c04040';
+        ctx.fillRect(0, 40, 40, 160);
+        ctx.fillStyle = '#a03030';
+        ctx.fillRect(5, 50, 30, 140);
+        ctx.fillStyle = '#d0d0d0';
+        ctx.fillRect(120, 140, 50, 30);
+        ctx.fillStyle = '#a0a0a0';
+        ctx.fillRect(130, 130, 30, 15);
+      } else if (type === 'kitchen') {
+        ctx.fillStyle = '#d0c8b0';
+        ctx.fillRect(0, 0, W, 200);
+        ctx.fillStyle = '#8a7050';
+        ctx.fillRect(0, 150, W, 50);
+        ctx.fillStyle = '#6a5040';
+        ctx.fillRect(20, 100, 50, 50);
+      } else if (type === 'car') {
+        ctx.fillStyle = '#3a4a5a';
+        ctx.fillRect(0, 0, W, 200);
+        ctx.fillStyle = '#2a3a4a';
+        ctx.fillRect(20, 120, 140, 60);
+        ctx.fillStyle = '#1a2a3a';
+        ctx.fillRect(30, 100, 50, 30);
+      } else if (type === 'fest') {
+        ctx.fillStyle = '#5a3a2a';
+        ctx.fillRect(0, 0, W, 200);
+        ctx.fillStyle = '#8a5a3a';
+        ctx.fillRect(0, 160, W, 40);
+      } else {
+        ctx.fillStyle = '#4a8aba';
+        ctx.fillRect(0, 0, W, 200);
+        ctx.fillStyle = '#3a7aaa';
+        ctx.fillRect(0, 160, W, 40);
+      }
+    }
+
+    function drawUI() {
+      ctx.fillStyle = '#1a1020';
+      ctx.fillRect(0, 0, W, 22);
+      const mins = Math.floor(animT / 60);
+      const secs = Math.floor(animT % 60);
+      ctx.fillStyle = '#fff';
+      ctx.font = 'bold 11px monospace';
+      ctx.fillText(String(mins).padStart(2,'0') + ':' + String(secs).padStart(2,'0'), 6, 15);
+      ctx.fillStyle = '#333';
+      ctx.fillRect(50, 6, 70, 10);
+      const barW = Math.max(0, Math.min(70, passion * 0.7));
+      const grad = ctx.createLinearGradient(50,0,120,0);
+      grad.addColorStop(0, '#ff4d8d');
+      grad.addColorStop(0.6, '#ff9f43');
+      grad.addColorStop(1, '#2ecc71');
+      ctx.fillStyle = grad;
+      ctx.fillRect(50, 6, barW, 10);
+      ctx.strokeStyle = '#666';
+      ctx.strokeRect(50, 6, 70, 10);
+      for (let i=0; i<3; i++) {
+        ctx.fillStyle = i < lives ? '#ff4d8d' : '#444';
+        ctx.beginPath();
+        const hx = 130 + i*14;
+        ctx.moveTo(hx, 12);
+        ctx.bezierCurveTo(hx-5, 6, hx-8, 12, hx, 17);
+        ctx.bezierCurveTo(hx+8, 12, hx+5, 6, hx, 12);
+        ctx.fill();
+      }
+    }
+
+    function drawPrompt() {
+      if (curPrompt === null) return;
+      ctx.save();
+      ctx.font = 'bold 48px system-ui';
+      ctx.textAlign = 'center';
+      ctx.textBaseline = 'middle';
+      if (isSpecial) {
+        ctx.fillStyle = '#c56cf0';
+        ctx.shadowColor = '#c56cf0';
+      } else {
+        ctx.fillStyle = '#ff9f43';
+        ctx.shadowColor = '#ff9f43';
+      }
+      ctx.shadowBlur = 12;
+      const scale = 1 + Math.sin(Date.now()/150) * 0.08;
+      ctx.translate(W/2, 55);
+      ctx.scale(scale, scale);
+      ctx.fillText(String(curPrompt), 0, 0);
+      ctx.restore();
+    }
+
+    function draw() {
+      ctx.clearRect(0, 0, W, H);
+      if (!playing) return;
+      const s = SCENES[scene];
+      drawBG(s.bg);
+      drawUI();
+      const bounce = Date.now() / 200;
+      if (s.bg === 'bath') {
+        drawChar(50, 145, 1, bounce);
+        drawChar(95, 140, 0, bounce+1);
+        drawChar(135, 145, 2, bounce+0.5);
+      } else if (s.bg === 'kitchen') {
+        drawChar(70, 145, 0, bounce);
+        drawChar(110, 145, 3, bounce+1);
+      } else if (s.bg === 'car') {
+        drawChar(60, 150, 0, bounce);
+        drawChar(110, 145, 1, bounce+1);
+      } else if (s.bg === 'fest') {
+        drawChar(50, 145, 1, bounce);
+        drawChar(90, 140, 0, bounce+1);
+        drawChar(130, 145, 2, bounce+0.5);
+      } else {
+        drawChar(60, 145, 0, bounce);
+        drawChar(110, 145, 1, bounce+1);
+      }
+      drawPrompt();
+      animT += 1/60;
+      requestAnimationFrame(draw);
+    }
+
+    const $ = id => document.getElementById(id);
+    function hideAll() {
+      ['menu','howto','scene-intro','result','gameover','win'].forEach(id => $(id).classList.add('hidden'));
+      $('keys').style.display = 'none';
+    }
+
+    $('btn-start').onclick = () => { scene=0; score=0; bestStreak=0; lives=3; showScene(); };
+    $('btn-howto').onclick = () => { hideAll(); $('howto').classList.remove('hidden'); };
+    $('btn-back').onclick = () => { hideAll(); $('menu').classList.remove('hidden'); };
     $('btn-go').onclick = startPlay;
     $('btn-next').onclick = () => {
       scene++;
       if (scene >= SCENES.length) {
-        $('w-score').textContent = score;
-        $('w-streak').textContent = bestStreak;
-        show('s-win');
-      } else goScene();
+        hideAll();
+        $('w-score').textContent = 'Score: ' + score + '  ·  Best Streak: ' + bestStreak;
+        $('win').classList.remove('hidden');
+      } else showScene();
     };
-    $('btn-retry').onclick = () => { scene=0; score=0; bestStreak=0; lives=3; goScene(); };
-    $('btn-again').onclick = () => { scene=0; score=0; bestStreak=0; lives=3; goScene(); };
-    $('btn-menu').onclick = () => show('s-intro');
-    $('btn-menu2').onclick = () => show('s-intro');
+    $('btn-retry').onclick = () => { scene=0; score=0; bestStreak=0; lives=3; showScene(); };
+    $('btn-again').onclick = () => { scene=0; score=0; bestStreak=0; lives=3; showScene(); };
+    $('btn-menu').onclick = () => { hideAll(); $('menu').classList.remove('hidden'); };
+    $('btn-menu2').onclick = () => { hideAll(); $('menu').classList.remove('hidden'); };
 
-    function goScene() {
+    function showScene() {
+      hideAll();
       const s = SCENES[scene];
-      $('scene-bg').textContent = s.bg;
-      $('char-him').textContent = s.him;
-      $('char-her').textContent = s.her;
-      $('scene-label').textContent = s.name;
-      $('scene-dialogue').textContent = s.intro + "\n\n" + s.reply;
-      show('s-scene');
+      $('si-title').textContent = s.name;
+      $('si-text').textContent = s.intro + '\n\n' + s.reply;
+      $('scene-intro').classList.remove('hidden');
     }
 
     function startPlay() {
-      const s = SCENES[scene];
-      hits=0; misses=0; streak=0; maxStreak=0; passion=25; idx=0; playing=true;
-      $('lives').textContent = lives;
-      $('streak').textContent = 0;
-      $('scene-name-play').textContent = s.name;
-      $('stage-bg').textContent = s.bg;
-      $('actor-him').textContent = s.him;
-      $('actor-her').textContent = s.her;
-      $('actor-him').classList.add('action');
-      $('actor-her').classList.add('action');
-      $('meter').style.width = '25%';
-      $('prompt').classList.remove('visible','special');
-      show('s-play');
-      setTimeout(() => { if (playing) next(); }, 800);
+      hideAll();
+      hits=0; misses=0; streak=0; maxStreak=0; passion=30; idx=0; playing=true; animT=0;
+      $('keys').style.display = 'grid';
+      requestAnimationFrame(draw);
+      setTimeout(() => { if (playing) nextPrompt(); }, 700);
     }
 
-    function next() {
+    function nextPrompt() {
       if (!playing) return;
       const s = SCENES[scene];
-      if (idx >= s.seq.length) { end(true); return; }
-      prompt = s.seq[idx++];
-      isSpecial = prompt === 5;
-      const p = $('prompt');
-      p.textContent = prompt;
-      p.classList.add('visible');
-      if (isSpecial) p.classList.add('special'); else p.classList.remove('special');
-
+      if (idx >= s.seq.length) { endSeq(true); return; }
+      curPrompt = s.seq[idx++];
+      isSpecial = curPrompt === 5;
       document.querySelectorAll('.key').forEach(k => {
-        k.classList.remove('active','active-special','hit','miss');
-        if (k.dataset.key == prompt) k.classList.add(isSpecial ? 'active-special' : 'active');
+        k.classList.remove('active','special-active','hit','miss');
+        if (k.dataset.k == curPrompt) k.classList.add(isSpecial ? 'special-active' : 'active');
       });
-
       clearTimeout(timer);
-      timer = setTimeout(() => { if (playing && prompt !== null) miss(); }, s.window);
+      timer = setTimeout(() => { if (playing && curPrompt !== null) doMiss(); }, s.window);
     }
 
-    function hit() {
-      if (!playing || prompt === null) return;
+    function doHit() {
+      if (!playing || curPrompt === null) return;
       const now = Date.now();
-      if (now - lastIn < 60) return;
+      if (now - lastIn < 50) return;
       lastIn = now;
       clearTimeout(timer);
       hits++; streak++;
       if (streak > maxStreak) maxStreak = streak;
       if (streak > bestStreak) bestStreak = streak;
-      passion = Math.min(100, passion + (isSpecial ? 15 : 9));
-      $('meter').style.width = passion + '%';
-      $('streak').textContent = streak;
-
+      passion = Math.min(100, passion + (isSpecial ? 14 : 9));
       document.querySelectorAll('.key').forEach(k => {
-        if (k.dataset.key == prompt) { k.classList.remove('active','active-special'); k.classList.add('hit'); }
+        if (k.dataset.k == curPrompt) { k.classList.remove('active','special-active'); k.classList.add('hit'); }
       });
-      float(isSpecial ? 'SPECIAL!' : (streak>=5 ? 'STREAK!' : 'HIT!'), isSpecial ? 'special' : 'good');
-      if (Math.random() > 0.4) {
-        const h = $('hearts');
-        h.classList.remove('show');
-        void h.offsetWidth;
-        h.classList.add('show');
-      }
-      $('prompt').classList.remove('visible');
-      prompt = null;
-      setTimeout(() => { if (playing) next(); }, SCENES[scene].speed * 0.3);
+      curPrompt = null;
+      setTimeout(() => { if (playing) nextPrompt(); }, SCENES[scene].speed * 0.28);
     }
 
-    function miss() {
-      if (!playing || prompt === null) return;
+    function doMiss() {
+      if (!playing || curPrompt === null) return;
       clearTimeout(timer);
       misses++; streak = 0;
-      passion = Math.max(0, passion - 15);
-      $('meter').style.width = passion + '%';
-      $('streak').textContent = 0;
-
+      passion = Math.max(0, passion - 14);
       document.querySelectorAll('.key').forEach(k => {
-        if (k.dataset.key == prompt) { k.classList.remove('active','active-special'); k.classList.add('miss'); }
+        if (k.dataset.k == curPrompt) { k.classList.remove('active','special-active'); k.classList.add('miss'); }
       });
-      float('FLOP!', 'bad');
-      $('prompt').classList.remove('visible');
-      prompt = null;
-
-      if (passion <= 8 || misses >= 4) {
+      curPrompt = null;
+      if (passion <= 10 || misses >= 4) {
         lives--;
-        $('lives').textContent = lives;
-        if (lives <= 0) { setTimeout(() => end(false, true), 400); return; }
+        if (lives <= 0) { setTimeout(() => endSeq(false, true), 350); return; }
       }
-      if (passion <= 0) { setTimeout(() => end(false), 350); return; }
-      setTimeout(() => { if (playing) next(); }, SCENES[scene].speed * 0.35);
+      if (passion <= 0) { setTimeout(() => endSeq(false), 300); return; }
+      setTimeout(() => { if (playing) nextPrompt(); }, SCENES[scene].speed * 0.32);
     }
 
-    function float(txt, type) {
-      const f = $('feedback');
-      f.textContent = txt;
-      f.className = 'feedback-float show ' + type;
-      setTimeout(() => f.classList.remove('show'), 450);
-    }
-
-    function end(ok, forced = false) {
+    function endSeq(ok, forced=false) {
       playing = false;
       clearTimeout(timer);
-      prompt = null;
-      $('actor-him').classList.remove('action');
-      $('actor-her').classList.remove('action');
-      document.querySelectorAll('.key').forEach(k => k.classList.remove('active','active-special','hit','miss'));
+      curPrompt = null;
+      $('keys').style.display = 'none';
+      document.querySelectorAll('.key').forEach(k => k.classList.remove('active','special-active','hit','miss'));
 
       if (forced || lives <= 0) {
-        $('o-score').textContent = score;
-        $('o-scenes').textContent = scene;
-        show('s-over');
+        hideAll();
+        $('go-score').textContent = 'Score: ' + score;
+        $('gameover').classList.remove('hidden');
         return;
       }
 
-      const success = passion >= 78;
-      const bonus = success ? 70 + maxStreak * 7 : 0;
-      const sc = Math.round(hits * 13 - misses * 8 + bonus + passion * 0.5);
+      const success = passion >= 75;
+      const bonus = success ? 60 + maxStreak * 6 : 0;
+      const sc = Math.round(hits * 12 - misses * 7 + bonus + passion * 0.4);
       score += Math.max(0, sc);
 
-      $('result-emoji').textContent = success ? '🔥' : '😅';
-      $('result-title').textContent = success ? 'YOU MADE IT!' : 'You flopped…';
-      $('result-title').className = 'result-title ' + (success ? 'win' : 'lose');
-      $('result-text').textContent = success ? SCENES[scene].win : SCENES[scene].lose;
-      $('r-hits').textContent = hits;
-      $('r-streak').textContent = maxStreak;
-      $('r-score').textContent = Math.max(0, sc);
-      $('bonus').textContent = bonus > 0 ? `LEVEL BONUS +${bonus}  ·  HIT-STREAK ${maxStreak}` : '';
-
+      hideAll();
+      $('r-emoji').textContent = success ? '🔥' : '😅';
+      $('r-title').textContent = success ? 'YOU MADE IT!' : 'You flopped…';
+      $('r-title').style.color = success ? '#2ecc71' : '#e74c3c';
+      $('r-text').textContent = success ? SCENES[scene].win : SCENES[scene].lose;
+      $('r-score').textContent = 'Score +' + Math.max(0,sc) + '  ·  Streak ' + maxStreak + (bonus ? '  ·  BONUS +' + bonus : '');
       if (!success) {
         lives--;
         if (lives <= 0) {
           setTimeout(() => {
-            $('o-score').textContent = score;
-            $('o-scenes').textContent = scene + 1;
-            show('s-over');
-          }, 1100);
+            hideAll();
+            $('go-score').textContent = 'Score: ' + score;
+            $('gameover').classList.remove('hidden');
+          }, 1000);
           return;
         }
       }
-      $('btn-next').textContent = scene === SCENES.length - 1 ? (success ? 'CLAIM THE CROWN' : 'FINISH') : (success ? 'NEXT SCENE' : 'CONTINUE');
-      show('s-result');
+      $('btn-next').textContent = scene === SCENES.length-1 ? (success ? 'CLAIM THE CROWN' : 'FINISH') : (success ? 'NEXT SCENE' : 'CONTINUE');
+      $('result').classList.remove('hidden');
     }
 
     function input(k) {
-      if (!playing || prompt === null) return;
-      if (String(k) === String(prompt)) hit();
-      else miss();
+      if (!playing || curPrompt === null) return;
+      if (String(k) === String(curPrompt)) doHit();
+      else doMiss();
     }
     document.addEventListener('keydown', e => {
       if (['1','2','3','5'].includes(e.key)) { e.preventDefault(); input(e.key); }
     });
     document.querySelectorAll('.key').forEach(k => {
-      k.addEventListener('click', () => input(k.dataset.key));
-      k.addEventListener('touchstart', e => { e.preventDefault(); input(k.dataset.key); }, {passive:false});
+      k.addEventListener('click', () => input(k.dataset.k));
+      k.addEventListener('touchstart', e => { e.preventDefault(); input(k.dataset.k); }, {passive:false});
     });
   </script>
 </body>
